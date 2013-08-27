@@ -105,11 +105,13 @@ OMX_ERRORTYPE Exynos_OSAL_LockANBHandle(
     case OMX_COLOR_FormatAndroidOpaque:
     {
         OMX_COLOR_FORMATTYPE formatType;
+#ifdef USE_DMA_BUF
         formatType = Exynos_OSAL_GetANBColorFormat((OMX_U32)priv_hnd);
         if ((formatType == OMX_COLOR_FormatYUV420SemiPlanar) ||
             (formatType == (OMX_COLOR_FORMATTYPE)OMX_SEC_COLOR_FormatNV12Tiled))
             usage = GRALLOC_USAGE_SW_READ_OFTEN | GRALLOC_USAGE_SW_WRITE_OFTEN;
         else
+#endif
             usage = GRALLOC_USAGE_SW_READ_OFTEN | GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_HW_VIDEO_ENCODER;
     }
         break;
@@ -180,10 +182,12 @@ OMX_COLOR_FORMATTYPE Exynos_OSAL_GetANBColorFormat(OMX_IN OMX_U32 handle)
     FunctionIn();
 
     OMX_COLOR_FORMATTYPE ret = OMX_COLOR_FormatUnused;
+#ifdef USE_DMA_BUF
     private_handle_t *priv_hnd = (private_handle_t *) handle;
 
     ret = Exynos_OSAL_HAL2OMXColorFormat(priv_hnd->format);
     Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "ColorFormat: 0x%x", ret);
+#endif
 
 EXIT:
     FunctionOut();
