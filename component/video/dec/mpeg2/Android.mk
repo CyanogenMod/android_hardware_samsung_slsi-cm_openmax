@@ -7,7 +7,6 @@ LOCAL_SRC_FILES := \
 	Exynos_OMX_Mpeg2dec.c \
 	library_register.c
 
-LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE := libOMX.Exynos.MPEG2.Decoder
 LOCAL_MODULE_RELATIVE_PATH := omx
 

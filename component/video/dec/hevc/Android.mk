@@ -7,7 +7,6 @@ LOCAL_SRC_FILES := \
 	Exynos_OMX_HEVCdec.c \
 	library_register.c
 
-LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE := libOMX.Exynos.HEVC.Decoder
 LOCAL_MODULE_RELATIVE_PATH := omx
 
