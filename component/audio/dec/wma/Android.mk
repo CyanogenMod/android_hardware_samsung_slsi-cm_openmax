@@ -8,7 +8,6 @@ LOCAL_SRC_FILES := \
 	Exynos_OMX_Wmadec.c \
 	library_register.c
 
-LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE := libOMX.Exynos.WMA.Decoder
 LOCAL_MODULE_RELATIVE_PATH := omx
 

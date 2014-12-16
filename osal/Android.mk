@@ -15,7 +15,6 @@ LOCAL_SRC_FILES := \
 	Exynos_OSAL_Log.c \
 	Exynos_OSAL_SharedMemory.c
 
-LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE := libExynosOMX_OSAL
 
 LOCAL_CFLAGS :=
