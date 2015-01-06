@@ -19,6 +19,11 @@ LOCAL_MODULE := libExynosOMX_OSAL
 
 LOCAL_CFLAGS :=
 
+LOCAL_CLANG_CFLAGS += \
+	-Wno-implicit-function-declaration \
+	-Wno-int-conversion \
+	-Wno-sign-compare
+
 ifeq ($(BOARD_USE_ANDROID), true)
 LOCAL_SRC_FILES += \
 	Exynos_OSAL_Android.cpp
