@@ -741,6 +741,12 @@ OMX_ERRORTYPE Exynos_OSAL_SetAndroidParameter(
                 pExynosPort->bufferProcessType = BUFFER_SHARE;
                 pExynosPort->portDefinition.format.video.eColorFormat = (OMX_COLOR_FORMATTYPE)OMX_SEC_COLOR_FormatNV12Tiled;
                 Exynos_OSAL_Log(EXYNOS_LOG_INFO, "output buffer sharing mode is on (NV12T)");
+            } else if ((pExynosPort->bStoreMetaData == OMX_FALSE) &&
+                (pExynosPort->bIsANBEnabled == OMX_FALSE) &&
+                (pExynosPort->bufferProcessType == BUFFER_SHARE)) {
+                pExynosPort->bufferProcessType = (EXYNOS_OMX_BUFFERPROCESS_TYPE)(BUFFER_COPY | BUFFER_ANBSHARE);
+                pExynosPort->portDefinition.format.video.eColorFormat = OMX_COLOR_FormatYUV420Planar;
+                Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "No OMX_IndexParamEnableAndroidBuffers => reset bufferProcessType");
             } else if ((pExynosPort->bufferProcessType & BUFFER_ANBSHARE_NV12L) == BUFFER_ANBSHARE_NV12L) {
                 pExynosPort->bufferProcessType = BUFFER_SHARE;
                 pExynosPort->portDefinition.format.video.eColorFormat = OMX_COLOR_FormatYUV420SemiPlanar;
@@ -858,6 +864,12 @@ OMX_ERRORTYPE Exynos_OSAL_SetAndroidParameter(
                 pExynosPort->bufferProcessType = BUFFER_SHARE;
                 pExynosPort->portDefinition.format.video.eColorFormat = (OMX_COLOR_FORMATTYPE)OMX_SEC_COLOR_FormatNV12Tiled;
                 Exynos_OSAL_Log(EXYNOS_LOG_INFO, "output buffer sharing mode is on (NV12T)");
+            } else if ((pExynosPort->bStoreMetaData == OMX_FALSE) &&
+                (pExynosPort->bIsANBEnabled == OMX_FALSE) &&
+                (pExynosPort->bufferProcessType == BUFFER_SHARE)) {
+                pExynosPort->bufferProcessType = (EXYNOS_OMX_BUFFERPROCESS_TYPE)(BUFFER_COPY | BUFFER_ANBSHARE);
+                pExynosPort->portDefinition.format.video.eColorFormat = OMX_COLOR_FormatYUV420Planar;
+                Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "No OMX_IndexParamStoreMetaDataBuffer => reset bufferProcessType");
             } else if ((pExynosPort->bufferProcessType & BUFFER_ANBSHARE_NV12L) == BUFFER_ANBSHARE_NV12L) {
                 pExynosPort->bufferProcessType = BUFFER_SHARE;
                 pExynosPort->portDefinition.format.video.eColorFormat = OMX_COLOR_FormatYUV420SemiPlanar;
