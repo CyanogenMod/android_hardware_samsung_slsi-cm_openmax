@@ -40,8 +40,8 @@
 #define DEFAULT_FRAME_WIDTH          176
 #define DEFAULT_FRAME_HEIGHT         144
 
-#define MAX_FRAME_WIDTH          1920
-#define MAX_FRAME_HEIGHT         1080
+#define MAX_FRAME_WIDTH          2560
+#define MAX_FRAME_HEIGHT         1600
 
 #define DEFAULT_VIDEO_INPUT_BUFFER_SIZE    (ALIGN_TO_16B(DEFAULT_FRAME_WIDTH) * ALIGN_TO_16B(DEFAULT_FRAME_HEIGHT) + \
                                                                                 ALIGN((ALIGN_TO_16B(DEFAULT_FRAME_WIDTH) * ALIGN_TO_16B(DEFAULT_FRAME_HEIGHT))/2,256))
