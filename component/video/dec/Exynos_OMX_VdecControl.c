@@ -536,9 +536,11 @@ OMX_ERRORTYPE Exynos_OMX_FlushPort(OMX_COMPONENTTYPE *pOMXComponent, OMX_S32 por
     }
 
 #ifdef USE_ANB
+#ifdef USE_ANB_REF
     if ((pExynosPort->bufferProcessType == BUFFER_SHARE) &&
         (portIndex == OUTPUT_PORT_INDEX))
         Exynos_OSAL_RefANB_Reset(pVideoDec->hRefHandle);
+#endif
 #endif
 
     if (pExynosPort->bufferSemID != NULL) {

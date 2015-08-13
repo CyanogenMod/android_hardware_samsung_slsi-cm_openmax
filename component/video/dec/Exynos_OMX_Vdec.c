@@ -1037,7 +1037,9 @@ OMX_ERRORTYPE Exynos_OMX_DstInputBufferProcess(OMX_HANDLETYPE hComponent)
                                 pANBHandle = dstInputData.bufferHeader->pBuffer;
                             }
 
+#ifdef USE_ANB_REF
                             Exynos_OSAL_RefANB_Increase(pVideoDec->hRefHandle, pANBHandle);
+#endif
                         }
 #else
                         Exynos_Shared_BufferToData(dstInputUseBuffer, &dstInputData, TWO_PLANE);
@@ -1117,7 +1119,9 @@ OMX_ERRORTYPE Exynos_OMX_DstOutputBufferProcess(OMX_HANDLETYPE hComponent)
                     for (i = 0; i < VIDEO_BUFFER_MAX_NUM; i++) {
                         if (pBufferInfo->PDSB.dpbFD[i].fd > -1) {
                             Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "decRefCnt-FD:%d", pBufferInfo->PDSB.dpbFD[i].fd);
+#ifdef USE_ANB_REF
                             Exynos_OSAL_RefANB_Decrease(pVideoDec->hRefHandle, pBufferInfo->PDSB.dpbFD[i].fd);
+#endif
                         } else {
                             break;
                         }
@@ -1504,7 +1508,9 @@ OMX_ERRORTYPE Exynos_OMX_VideoDecodeComponentInit(OMX_IN OMX_HANDLETYPE hCompone
     pExynosComponent->exynos_BufferFlush          = &Exynos_OMX_BufferFlush;
 
 #ifdef USE_ANB
+#ifdef USE_ANB_REF
     pVideoDec->hRefHandle = Exynos_OSAL_RefANB_Create();
+#endif
 #endif
 
 EXIT:
@@ -1543,7 +1549,9 @@ OMX_ERRORTYPE Exynos_OMX_VideoDecodeComponentDeinit(OMX_IN OMX_HANDLETYPE hCompo
     pVideoDec = (EXYNOS_OMX_VIDEODEC_COMPONENT *)pExynosComponent->hComponentHandle;
 
 #ifdef USE_ANB
+#ifdef USE_ANB_REF
     Exynos_OSAL_RefANB_Terminate(pVideoDec->hRefHandle);
+#endif
 #endif
 
     Exynos_OSAL_Free(pVideoDec);

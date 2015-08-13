@@ -66,11 +66,13 @@ extern "C" {
 
 static int lockCnt = 0;
 
+#ifdef USE_ANB_REF
 int getIonFd(gralloc_module_t const *module)
 {
     private_module_t* m = const_cast<private_module_t*>(reinterpret_cast<const private_module_t*>(module));
     return m->ionfd;
 }
+#endif
 
 OMX_ERRORTYPE Exynos_OSAL_LockANBHandle(
     OMX_IN OMX_U32 handle,
@@ -235,6 +237,7 @@ EXIT:
     return ret;
 }
 
+#ifdef USE_ANB_REF
 OMX_HANDLETYPE Exynos_OSAL_RefANB_Create()
 {
     OMX_ERRORTYPE            ret    = OMX_ErrorNone;
@@ -471,6 +474,7 @@ EXIT:
 
     return ret;
 }
+#endif
 
 OMX_ERRORTYPE useAndroidNativeBuffer(
     EXYNOS_OMX_BASEPORT   *pExynosPort,

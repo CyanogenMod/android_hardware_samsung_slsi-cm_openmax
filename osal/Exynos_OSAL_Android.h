@@ -87,11 +87,13 @@ OMX_ERRORTYPE Exynos_OSAL_LockANBHandle(OMX_IN OMX_U32 pBuffer,
                                         OMX_OUT OMX_U32 *pStride,
                                         OMX_OUT OMX_PTR planes);
 
+#ifdef USE_ANB_REF
 OMX_HANDLETYPE Exynos_OSAL_RefANB_Create();
 OMX_ERRORTYPE Exynos_OSAL_RefANB_Reset(OMX_HANDLETYPE hREF);
 OMX_ERRORTYPE Exynos_OSAL_RefANB_Terminate(OMX_HANDLETYPE hREF);
 OMX_ERRORTYPE Exynos_OSAL_RefANB_Increase(OMX_HANDLETYPE hREF, OMX_PTR pBuffer);
 OMX_ERRORTYPE Exynos_OSAL_RefANB_Decrease(OMX_HANDLETYPE hREF, OMX_S32 BufferFd);
+#endif
 
 OMX_ERRORTYPE Exynos_OSAL_UnlockANBHandle(OMX_IN OMX_U32 pBuffer);
 

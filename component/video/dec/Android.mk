@@ -37,6 +37,10 @@ endif
 ifeq ($(BOARD_USE_ANB), true)
 LOCAL_STATIC_LIBRARIES += libExynosOMX_OSAL
 LOCAL_CFLAGS += -DUSE_ANB
+
+ifneq ($(TARGET_SOC), exynos5410)
+LOCAL_CFLAGS += -DUSE_ANB_REF
+endif
 endif
 
 ifeq ($(BOARD_USE_DMA_BUF), true)

@@ -28,6 +28,10 @@ endif
 ifeq ($(BOARD_USE_ANB), true)
 LOCAL_CFLAGS += -DUSE_ANB
 
+ifneq ($(TARGET_SOC), exynos5410)
+LOCAL_CFLAGS += -DUSE_ANB_REF
+endif
+
 ifeq ($(BOARD_USE_ANB_OUTBUF_SHARE), true)
 LOCAL_CFLAGS += -DUSE_ANB_OUTBUF_SHARE
 endif
