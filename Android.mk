@@ -24,14 +24,14 @@ EXYNOS_OMX_INC := $(EXYNOS_OMX_TOP)/include
 EXYNOS_OMX_COMPONENT := $(EXYNOS_OMX_TOP)/component
 
 EXYNOS_VIDEO_CODEC := \
-	hardware/samsung_slsi/exynos/libvideocodec
+	hardware/samsung_slsi-cm/exynos/libvideocodec
 ifeq ($(BOARD_USE_ALP_AUDIO), true)
     ifeq ($(BOARD_USE_SEIREN_AUDIO), true)
     EXYNOS_AUDIO_CODEC += \
-        hardware/samsung_slsi/exynos/libseiren
+        hardware/samsung_slsi-cm/exynos/libseiren
     else
     EXYNOS_AUDIO_CODEC += \
-        hardware/samsung_slsi/exynos/libsrp
+        hardware/samsung_slsi-cm/exynos/libsrp
     endif
 endif
 
