@@ -318,7 +318,6 @@ int Exynos_OSAL_OMX2VideoFormat(
 
     switch ((int)eColorFormat) {
     case OMX_COLOR_FormatYUV420SemiPlanar:
-    case OMX_SEC_COLOR_FormatNV12LPhysicalAddress:
         nVideoFormat = VIDEO_COLORFORMAT_NV12;
         break;
     case OMX_SEC_COLOR_FormatNV21Linear:
@@ -326,6 +325,7 @@ int Exynos_OSAL_OMX2VideoFormat(
         nVideoFormat = VIDEO_COLORFORMAT_NV21;
         break;
     case OMX_SEC_COLOR_FormatNV12Tiled:
+    case OMX_SEC_COLOR_FormatNV12LPhysicalAddress:
         nVideoFormat = VIDEO_COLORFORMAT_NV12_TILED;
         break;
     case OMX_COLOR_FormatYUV420Planar:
