@@ -1552,7 +1552,6 @@ OMX_ERRORTYPE Exynos_OMX_BaseComponent_Constructor(
     pOMXComponent->SendCommand         = &Exynos_OMX_SendCommand;
     pOMXComponent->GetState            = &Exynos_OMX_GetState;
     pOMXComponent->SetCallbacks        = &Exynos_OMX_SetCallbacks;
-    pOMXComponent->UseEGLImage         = &Exynos_OMX_UseEGLImage;
 
 EXIT:
     FunctionOut();

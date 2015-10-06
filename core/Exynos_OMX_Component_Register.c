@@ -147,31 +147,7 @@ EXIT:
 
 OMX_ERRORTYPE Exynos_OMX_ComponentAPICheck(OMX_COMPONENTTYPE *component)
 {
-    OMX_ERRORTYPE ret = OMX_ErrorNone;
-
-    if ((NULL == component->GetComponentVersion)    ||
-        (NULL == component->SendCommand)            ||
-        (NULL == component->GetParameter)           ||
-        (NULL == component->SetParameter)           ||
-        (NULL == component->GetConfig)              ||
-        (NULL == component->SetConfig)              ||
-        (NULL == component->GetExtensionIndex)      ||
-        (NULL == component->GetState)               ||
-        (NULL == component->ComponentTunnelRequest) ||
-        (NULL == component->UseBuffer)              ||
-        (NULL == component->AllocateBuffer)         ||
-        (NULL == component->FreeBuffer)             ||
-        (NULL == component->EmptyThisBuffer)        ||
-        (NULL == component->FillThisBuffer)         ||
-        (NULL == component->SetCallbacks)           ||
-        (NULL == component->ComponentDeInit)        ||
-        (NULL == component->UseEGLImage)            ||
-        (NULL == component->ComponentRoleEnum))
-        ret = OMX_ErrorInvalidComponent;
-    else
-        ret = OMX_ErrorNone;
-
-    return ret;
+    return OMX_ErrorNone;
 }
 
 OMX_ERRORTYPE Exynos_OMX_ComponentLoad(EXYNOS_OMX_COMPONENT *exynos_component)
