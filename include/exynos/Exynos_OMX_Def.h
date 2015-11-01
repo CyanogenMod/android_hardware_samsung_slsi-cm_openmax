@@ -162,7 +162,9 @@ typedef enum _EXYNOS_OMX_COLOR_FORMATTYPE {
     OMX_SEC_COLOR_FormatNV12LPhysicalAddress        = 0x7F000002,
     OMX_SEC_COLOR_FormatNV12LVirtualAddress         = 0x7F000003,
 #ifndef USE_NATIVE_SEC_NV12TILED
+#ifdef OMX_SEC_COLOR_FormatNV12Tiled
     OMX_SEC_COLOR_FormatNV12Tiled                   = 0x7FC00002,  /* 0x7FC00002 */
+#endif
 #endif
     OMX_SEC_COLOR_FormatNV21LPhysicalAddress        = 0x7F000010,
     OMX_SEC_COLOR_FormatNV21Linear                  = 0x7F000011,
