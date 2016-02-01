@@ -146,7 +146,7 @@ typedef struct _EXYNOS_OMX_VIDEOENC_COMPONENT
 extern "C" {
 #endif
 
-inline void Exynos_UpdateFrameSize(OMX_COMPONENTTYPE *pOMXComponent);
+inline extern void Exynos_UpdateFrameSize(OMX_COMPONENTTYPE *pOMXComponent);
 void Exynos_Input_SetSupportFormat(EXYNOS_OMX_BASECOMPONENT *pExynosComponent);
 OMX_COLOR_FORMATTYPE Exynos_Input_GetActualColorFormat(EXYNOS_OMX_BASECOMPONENT *pExynosComponent);
 OMX_BOOL Exynos_Check_BufferProcess_State(EXYNOS_OMX_BASECOMPONENT *pExynosComponent, OMX_U32 nPortIndex);
