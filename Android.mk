@@ -42,7 +42,7 @@ include $(EXYNOS_OMX_COMPONENT)/common/Android.mk
 include $(EXYNOS_OMX_COMPONENT)/video/dec/Android.mk
 include $(EXYNOS_OMX_COMPONENT)/video/dec/h264/Android.mk
 include $(EXYNOS_OMX_COMPONENT)/video/dec/mpeg4/Android.mk
-ifeq ($(TARGET_BOARD_PLATFORM),exynos5)
+ifneq ($(filter exynos5 exynos7,$(TARGET_BOARD_PLATFORM)),)
 include $(EXYNOS_OMX_COMPONENT)/video/dec/vp8/Android.mk
 endif
 include $(EXYNOS_OMX_COMPONENT)/video/dec/mpeg2/Android.mk
