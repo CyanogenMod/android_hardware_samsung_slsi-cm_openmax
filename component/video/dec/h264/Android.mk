@@ -24,7 +24,7 @@ ifeq ($(BOARD_USE_S3D_SUPPORT), true)
 ifeq ($(BOARD_USES_HWC_SERVICES), true)
 LOCAL_CFLAGS += -DUSE_S3D_SUPPORT
 else
-ifeq ($(TARGET_BOARD_PLATFORM), exynos5)
+ifneq ($(filter exynos5 exynos7,$(TARGET_BOARD_PLATFORM)),)
 LOCAL_CFLAGS += -DUSE_S3D_SUPPORT
 endif
 endif
