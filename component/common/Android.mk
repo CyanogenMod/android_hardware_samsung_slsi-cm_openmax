@@ -11,6 +11,10 @@ LOCAL_MODULE := libExynosOMX_Basecomponent
 
 LOCAL_CFLAGS :=
 
+LOCAL_ARM_MODE := arm
+
+LOCAL_MULTILIB := 32
+
 LOCAL_STATIC_LIBRARIES := libExynosOMX_OSAL
 LOCAL_SHARED_LIBRARIES := libcutils libutils
 

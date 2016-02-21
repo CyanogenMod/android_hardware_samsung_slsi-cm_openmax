@@ -13,6 +13,8 @@ LOCAL_CFLAGS :=
 
 LOCAL_ARM_MODE := arm
 
+LOCAL_MULTILIB := 32
+
 LOCAL_STATIC_LIBRARIES := libExynosOMX_OSAL libExynosOMX_Basecomponent
 LOCAL_SHARED_LIBRARIES := libc libdl libcutils libutils \
 	libExynosOMX_Resourcemanager

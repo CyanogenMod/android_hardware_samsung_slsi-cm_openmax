@@ -41,6 +41,8 @@ endif
 
 LOCAL_ARM_MODE := arm
 
+LOCAL_MULTILIB := 32
+
 LOCAL_STATIC_LIBRARIES := libExynosOMX_Vdec libExynosOMX_OSAL libExynosOMX_Basecomponent \
 	libswconverter libExynosVideoApi
 LOCAL_SHARED_LIBRARIES := libc libdl libcutils libutils libui \
