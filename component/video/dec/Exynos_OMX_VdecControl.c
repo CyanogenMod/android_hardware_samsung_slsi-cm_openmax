@@ -253,7 +253,7 @@ OMX_ERRORTYPE Exynos_OMX_AllocateBuffer(
             pExynosPort->bufferStateAllocate[i] = (BUFFER_STATE_ALLOCATED | HEADER_STATE_ALLOCATED);
             INIT_SET_SIZE_VERSION(temp_bufferHeader, OMX_BUFFERHEADERTYPE);
             if (pVideoDec->bDRMPlayerMode == OMX_TRUE)
-                temp_bufferHeader->pBuffer = (OMX_PTR)temp_buffer_fd;
+                temp_bufferHeader->pBuffer = (OMX_PTR)(intptr_t)temp_buffer_fd;
             else
                 temp_bufferHeader->pBuffer = temp_buffer;
             temp_bufferHeader->nAllocLen      = nSizeBytes;
@@ -342,7 +342,7 @@ OMX_ERRORTYPE Exynos_OMX_FreeBuffer(
             if (pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer == pBufferHdr->pBuffer) {
                 if (pExynosPort->bufferStateAllocate[i] & BUFFER_STATE_ALLOCATED) {
                     if ((pVideoDec->bDRMPlayerMode == OMX_TRUE) && (nPortIndex == INPUT_PORT_INDEX)) {
-                        OMX_PTR mapBuffer = Exynos_OSAL_SharedMemory_IONToVirt(pVideoDec->hSharedMemory, (int)pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer);
+                        OMX_PTR mapBuffer = Exynos_OSAL_SharedMemory_IONToVirt(pVideoDec->hSharedMemory, (intptr_t)pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer);
                         Exynos_OSAL_SharedMemory_Free(pVideoDec->hSharedMemory, mapBuffer);
                     } else {
                         Exynos_OSAL_SharedMemory_Free(pVideoDec->hSharedMemory, pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer);
@@ -501,7 +501,7 @@ OMX_ERRORTYPE Exynos_OMX_FlushPort(OMX_COMPONENTTYPE *pOMXComponent, OMX_S32 por
                 } else if (portIndex == OUTPUT_PORT_INDEX) {
 #ifdef USE_ANB
                     if (pExynosPort->bIsANBEnabled == OMX_TRUE)
-                        Exynos_OSAL_UnlockANBHandle((OMX_U32)pExynosPort->processData.bufferHeader->pBuffer);
+                        Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)pExynosPort->processData.bufferHeader->pBuffer);
 #ifdef USE_STOREMETADATA
                     else if (pExynosPort->bStoreMetaData == OMX_TRUE)
                         Exynos_OSAL_UnlockMetaData(pExynosPort->processData.bufferHeader->pBuffer);
@@ -518,7 +518,7 @@ OMX_ERRORTYPE Exynos_OMX_FlushPort(OMX_COMPONENTTYPE *pOMXComponent, OMX_S32 por
                     if (portIndex == OUTPUT_PORT_INDEX) {
 #ifdef USE_ANB
                         if (pExynosPort->bIsANBEnabled == OMX_TRUE)
-                            Exynos_OSAL_UnlockANBHandle((OMX_U32)pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer);
+                            Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer);
 #ifdef USE_STOREMETADATA
                         else if (pExynosPort->bStoreMetaData == OMX_TRUE)
                             Exynos_OSAL_UnlockMetaData(pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer);
@@ -1709,7 +1709,7 @@ OMX_ERRORTYPE Exynos_Shared_ANBBufferToData(EXYNOS_OMX_DATABUFFER *pUseBuffer, E
             (pExynosPort->exceptionFlag == GENERAL_STATE)) {
 
             if (pExynosPort->bIsANBEnabled == OMX_TRUE)
-                ret = Exynos_OSAL_LockANBHandle((OMX_U32)pUseBuffer->bufferHeader->pBuffer, width, height, pExynosPort->portDefinition.format.video.eColorFormat, &stride, planes);
+                ret = Exynos_OSAL_LockANBHandle((OMX_U32)(uintptr_t)pUseBuffer->bufferHeader->pBuffer, width, height, pExynosPort->portDefinition.format.video.eColorFormat, &stride, planes);
 #ifdef USE_STOREMETADATA
             else if (pExynosPort->bStoreMetaData == OMX_TRUE)
                 ret = Exynos_OSAL_LockMetaData(pUseBuffer->bufferHeader->pBuffer, width, height, pExynosPort->portDefinition.format.video.eColorFormat, &stride, planes);
@@ -1776,7 +1776,7 @@ OMX_ERRORTYPE Exynos_Shared_DataToANBBuffer(EXYNOS_OMX_DATA *pData, EXYNOS_OMX_D
     }
 
     if (pExynosPort->bIsANBEnabled == OMX_TRUE) {
-        Exynos_OSAL_UnlockANBHandle((OMX_U32)pUseBuffer->bufferHeader->pBuffer);
+        Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)pUseBuffer->bufferHeader->pBuffer);
 #ifdef USE_STOREMETADATA
     } else if (pExynosPort->bStoreMetaData == OMX_TRUE) {
         Exynos_OSAL_UnlockMetaData(pUseBuffer->bufferHeader->pBuffer);
