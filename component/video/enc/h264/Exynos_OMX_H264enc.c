@@ -2118,7 +2118,7 @@ OMX_ERRORTYPE Exynos_H264Enc_DstOut(OMX_COMPONENTTYPE *pOMXComponent, EXYNOS_OMX
             p = FindDelimiter((OMX_U8 *)((char *)pDstOutputData->multiPlaneBuffer.dataBuffer[0] + 4),
                                 pDstOutputData->dataLen - 4);
 
-            iSpsSize = (unsigned int)p - (unsigned int)pDstOutputData->multiPlaneBuffer.dataBuffer[0];
+            iSpsSize = (unsigned int)((uintptr_t)p - (uintptr_t)pDstOutputData->multiPlaneBuffer.dataBuffer[0]);
             pH264Enc->hMFCH264Handle.headerData.pHeaderSPS =
                 (OMX_PTR)pDstOutputData->multiPlaneBuffer.dataBuffer[0];
             pH264Enc->hMFCH264Handle.headerData.SPSLen = iSpsSize;

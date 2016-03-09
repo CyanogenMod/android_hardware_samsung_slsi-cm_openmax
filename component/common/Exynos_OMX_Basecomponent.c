@@ -116,7 +116,7 @@ OMX_ERRORTYPE Exynos_OMX_GetComponentVersion(
 
     /* Fill UUID with handle address, PID and UID.
      * This should guarantee uiniqness */
-    compUUID[0] = (OMX_U32)pOMXComponent;
+    compUUID[0] = (OMX_U32)(uintptr_t)pOMXComponent;
     compUUID[1] = getpid();
     compUUID[2] = getuid();
     Exynos_OSAL_Memcpy(*pComponentUUID, compUUID, 3 * sizeof(*compUUID));

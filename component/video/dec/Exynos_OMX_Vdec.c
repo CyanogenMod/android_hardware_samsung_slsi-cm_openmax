@@ -444,7 +444,7 @@ OMX_BOOL Exynos_CSC_OutputData(OMX_COMPONENTTYPE *pOMXComponent, EXYNOS_OMX_DATA
 
 #ifdef USE_ANB
     if (exynosOutputPort->bIsANBEnabled == OMX_TRUE) {
-        if (OMX_ErrorNone != Exynos_OSAL_LockANBHandle((OMX_U32)pOutputBuf, nImageWidth, nImageHeight, eColorFormat, &stride, planes)) {
+        if (OMX_ErrorNone != Exynos_OSAL_LockANBHandle((OMX_U32)(uintptr_t)pOutputBuf, nImageWidth, nImageHeight, eColorFormat, &stride, planes)) {
             Exynos_OSAL_Log(EXYNOS_LOG_ERROR, "%s: Exynos_OSAL_LockANBHandle() failed", __FUNCTION__);
             ret = OMX_FALSE;
             goto EXIT;
@@ -502,18 +502,18 @@ OMX_BOOL Exynos_CSC_OutputData(OMX_COMPONENTTYPE *pOMXComponent, EXYNOS_OMX_DATA
         if (csc_method == CSC_METHOD_HW) {
             csc_memType = CSC_MEMORY_DMABUF;
 
-            pSrcBuf[0] = (void *)dstOutputData->multiPlaneBuffer.fd[0];
-            pSrcBuf[1] = (void *)dstOutputData->multiPlaneBuffer.fd[1];
-            pSrcBuf[2] = (void *)dstOutputData->multiPlaneBuffer.fd[2];
+            pSrcBuf[0] = (void *)(intptr_t)dstOutputData->multiPlaneBuffer.fd[0];
+            pSrcBuf[1] = (void *)(intptr_t)dstOutputData->multiPlaneBuffer.fd[1];
+            pSrcBuf[2] = (void *)(intptr_t)dstOutputData->multiPlaneBuffer.fd[2];
 
 #ifdef USE_ANB
             if ((exynosOutputPort->bIsANBEnabled == OMX_TRUE) ||
                 (exynosOutputPort->bStoreMetaData == OMX_TRUE)) {
-                pYUVBuf[0]  = (void *)planes[0].fd;
-                pYUVBuf[1]  = (void *)planes[1].fd;
-                pYUVBuf[2]  = (void *)planes[2].fd;
+                pYUVBuf[0]  = (void *)(intptr_t)planes[0].fd;
+                pYUVBuf[1]  = (void *)(intptr_t)planes[1].fd;
+                pYUVBuf[2]  = (void *)(intptr_t)planes[2].fd;
             } else {
-                pYUVBuf[0] = (void *)Exynos_OSAL_SharedMemory_VirtToION(pVideoDec->hSharedMemory, pOutputBuf);
+                pYUVBuf[0] = (void *)(intptr_t)Exynos_OSAL_SharedMemory_VirtToION(pVideoDec->hSharedMemory, pOutputBuf);
                 pYUVBuf[1] = NULL;
                 pYUVBuf[2] = NULL;
             }
@@ -578,7 +578,7 @@ OMX_BOOL Exynos_CSC_OutputData(OMX_COMPONENTTYPE *pOMXComponent, EXYNOS_OMX_DATA
 
 #ifdef USE_ANB
     if (exynosOutputPort->bIsANBEnabled == OMX_TRUE)
-        Exynos_OSAL_UnlockANBHandle((OMX_U32)pOutputBuf);
+        Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)pOutputBuf);
 #ifdef USE_STOREMETADATA
     else if (exynosOutputPort->bStoreMetaData == OMX_TRUE)
         Exynos_OSAL_UnlockMetaData(pOutputBuf);
@@ -620,13 +620,13 @@ OMX_BOOL Exynos_Preprocessor_InputData(OMX_COMPONENTTYPE *pOMXComponent, EXYNOS_
                 OMX_PTR dataBuffer = NULL;
 
                 dataBuffer = Exynos_OSAL_SharedMemory_IONToVirt(pVideoDec->hSharedMemory,
-                                                            (int)srcInputData->multiPlaneBuffer.dataBuffer[0]);
+                                                            (int)(intptr_t)srcInputData->multiPlaneBuffer.dataBuffer[0]);
                 if (dataBuffer == NULL) {
                     ret = OMX_FALSE;
                     goto EXIT;
                 }
 
-                srcInputData->multiPlaneBuffer.fd[0] = (int)srcInputData->multiPlaneBuffer.dataBuffer[0];
+                srcInputData->multiPlaneBuffer.fd[0] = (int)(intptr_t)srcInputData->multiPlaneBuffer.dataBuffer[0];
                 srcInputData->multiPlaneBuffer.dataBuffer[0] = dataBuffer;
             } else {
                 srcInputData->multiPlaneBuffer.fd[0] =
