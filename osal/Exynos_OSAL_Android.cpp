@@ -86,7 +86,7 @@ OMX_ERRORTYPE Exynos_OSAL_LockANBHandle(
 
     OMX_ERRORTYPE ret = OMX_ErrorNone;
     GraphicBufferMapper &mapper = GraphicBufferMapper::get();
-    buffer_handle_t bufferHandle = (buffer_handle_t) handle;
+    buffer_handle_t bufferHandle = (buffer_handle_t)(uintptr_t) handle;
 #ifdef USE_DMA_BUF
     private_handle_t *priv_hnd = (private_handle_t *) bufferHandle;
 #endif
@@ -108,7 +108,7 @@ OMX_ERRORTYPE Exynos_OSAL_LockANBHandle(
     {
         OMX_COLOR_FORMATTYPE formatType;
 #ifdef USE_DMA_BUF
-        formatType = Exynos_OSAL_GetANBColorFormat((OMX_U32)priv_hnd);
+        formatType = Exynos_OSAL_GetANBColorFormat((OMX_U32)(uintptr_t)priv_hnd);
         if ((formatType == OMX_COLOR_FormatYUV420SemiPlanar) ||
             (formatType == (OMX_COLOR_FORMATTYPE)OMX_SEC_COLOR_FormatNV12Tiled))
             usage = GRALLOC_USAGE_SW_READ_OFTEN | GRALLOC_USAGE_SW_WRITE_OFTEN;
@@ -159,7 +159,7 @@ OMX_ERRORTYPE Exynos_OSAL_UnlockANBHandle(OMX_IN OMX_U32 handle)
 
     OMX_ERRORTYPE ret = OMX_ErrorNone;
     GraphicBufferMapper &mapper = GraphicBufferMapper::get();
-    buffer_handle_t bufferHandle = (buffer_handle_t) handle;
+    buffer_handle_t bufferHandle = (buffer_handle_t)(uintptr_t) handle;
 
     Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "%s: handle: 0x%x", __func__, handle);
 
@@ -185,7 +185,7 @@ OMX_COLOR_FORMATTYPE Exynos_OSAL_GetANBColorFormat(OMX_IN OMX_U32 handle)
 
     OMX_COLOR_FORMATTYPE ret = OMX_COLOR_FormatUnused;
 #ifdef USE_DMA_BUF
-    private_handle_t *priv_hnd = (private_handle_t *) handle;
+    private_handle_t *priv_hnd = (private_handle_t *)(uintptr_t) handle;
 
     ret = Exynos_OSAL_HAL2OMXColorFormat(priv_hnd->format);
     Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "ColorFormat: 0x%x", ret);
@@ -212,7 +212,7 @@ OMX_ERRORTYPE Exynos_OSAL_LockMetaData(
 
     ret = Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pBuffer, &pBuf);
     if (ret == OMX_ErrorNone)
-        ret = Exynos_OSAL_LockANBHandle((OMX_U32)pBuf, width, height, format, pStride, planes);
+        ret = Exynos_OSAL_LockANBHandle(reinterpret_cast<uintptr_t>(pBuf), width, height, format, pStride, planes);
 
 EXIT:
     FunctionOut();
@@ -229,7 +229,7 @@ OMX_ERRORTYPE Exynos_OSAL_UnlockMetaData(OMX_IN OMX_PTR pBuffer)
 
     ret = Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pBuffer, &pBuf);
     if (ret == OMX_ErrorNone)
-        ret = Exynos_OSAL_UnlockANBHandle((OMX_U32)pBuf);
+        ret = Exynos_OSAL_UnlockANBHandle(reinterpret_cast<uintptr_t>(pBuf));
 
 EXIT:
     FunctionOut();
@@ -536,7 +536,7 @@ OMX_ERRORTYPE useAndroidNativeBuffer(
 
             width = pExynosPort->portDefinition.format.video.nFrameWidth;
             height = pExynosPort->portDefinition.format.video.nFrameHeight;
-            Exynos_OSAL_LockANBHandle((OMX_U32)temp_bufferHeader->pBuffer, width, height,
+            Exynos_OSAL_LockANBHandle(reinterpret_cast<uintptr_t>(temp_bufferHeader->pBuffer), width, height,
                                 pExynosPort->portDefinition.format.video.eColorFormat,
                                 &stride, planes);
 #ifdef USE_DMA_BUF
@@ -547,7 +547,7 @@ OMX_ERRORTYPE useAndroidNativeBuffer(
             pExynosPort->extendBufferHeader[i].pYUVBuf[0] = planes[0].addr;
             pExynosPort->extendBufferHeader[i].pYUVBuf[1] = planes[1].addr;
             pExynosPort->extendBufferHeader[i].pYUVBuf[2] = planes[2].addr;
-            Exynos_OSAL_UnlockANBHandle((OMX_U32)temp_bufferHeader->pBuffer);
+            Exynos_OSAL_UnlockANBHandle(reinterpret_cast<uintptr_t>(temp_bufferHeader->pBuffer));
             Exynos_OSAL_Log(EXYNOS_LOG_TRACE, "useAndroidNativeBuffer: buf %d pYUVBuf[0]:0x%x , pYUVBuf[1]:0x%x ",
                             i, pExynosPort->extendBufferHeader[i].pYUVBuf[0],
                             pExynosPort->extendBufferHeader[i].pYUVBuf[1]);
@@ -972,7 +972,7 @@ OMX_ERRORTYPE Exynos_OSAL_GetInfoFromMetaData(OMX_IN OMX_BYTE pBuffer,
 
         /* ION FD. */
         nIonFD = (OMX_U32)pNativeHandle->data[0];
-        ppBuf[0] = (OMX_PTR *)nIonFD;
+        ppBuf[0] = (OMX_PTR *)(uintptr_t)nIonFD;
     }
         break;
     default:
@@ -1090,7 +1090,7 @@ OMX_PTR Exynos_OSAL_AllocMetaDataBuffer(
         nTempFD = Exynos_OSAL_SharedMemory_VirtToION(hSharedMemory, pTempVirAdd);
 
         pNativeHandle->data[0] = (int)nTempFD;
-        pNativeHandle->data[1] = (int)pTempVirAdd;
+        pNativeHandle->data[1] = reinterpret_cast<intptr_t>(pTempVirAdd);
         pNativeHandle->data[2] = (int)nSizeBytes;
         pNativeHandle->data[3] = (int)0;
 
@@ -1132,7 +1132,7 @@ OMX_ERRORTYPE Exynos_OSAL_FreeMetaDataBuffer(
         pNativeHandle = (native_handle_t *)bufferHandle;
 
         nTempFD     = (OMX_U32)pNativeHandle->data[0];
-        pTempVirAdd = (OMX_PTR)pNativeHandle->data[1];
+        pTempVirAdd = (OMX_PTR)(intptr_t)pNativeHandle->data[1];
 
         Exynos_OSAL_SharedMemory_Free(hSharedMemory, pTempVirAdd);
 
