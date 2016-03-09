@@ -83,11 +83,11 @@ OMX_HANDLETYPE Exynos_OSAL_SharedMemory_Open()
         goto EXIT;
     }
 
-    pHandle->hIONHandle = (OMX_HANDLETYPE)IONClient;
+    pHandle->hIONHandle = (OMX_HANDLETYPE)(intptr_t)IONClient;
 
     if (OMX_ErrorNone != Exynos_OSAL_MutexCreate(&pHandle->hSMMutex)) {
         Exynos_OSAL_Log(EXYNOS_LOG_ERROR, "Exynos_OSAL_MutexCreate(hSMMutex) is failed");
-        ion_client_destroy((ion_client)pHandle->hIONHandle);
+        ion_client_destroy((ion_client)(intptr_t)pHandle->hIONHandle);
         pHandle->hIONHandle = NULL;
 
         Exynos_OSAL_Free((void *)pHandle);
@@ -138,7 +138,7 @@ void Exynos_OSAL_SharedMemory_Close(OMX_HANDLETYPE handle)
     Exynos_OSAL_MutexTerminate(pHandle->hSMMutex);
     pHandle->hSMMutex = NULL;
 
-    ion_client_destroy((ion_client)pHandle->hIONHandle);
+    ion_client_destroy((ion_client)(intptr_t)pHandle->hIONHandle);
     pHandle->hIONHandle = NULL;
 
     Exynos_OSAL_Free(pHandle);
@@ -205,11 +205,11 @@ OMX_PTR Exynos_OSAL_SharedMemory_Alloc(OMX_HANDLETYPE handle, OMX_U32 size, MEMO
         flag |= ION_FLAG_CACHED_NEEDS_SYNC | ION_FLAG_PRESERVE_KMAP;
 #endif
 
-    IONBuffer = ion_alloc((ion_client)pHandle->hIONHandle, size, 0, mask, flag);
+    IONBuffer = ion_alloc((ion_client)(intptr_t)pHandle->hIONHandle, size, 0, mask, flag);
     if ((IONBuffer <= 0) &&
         (memoryType == CONTIG_MEMORY)) {
         flag = 0;
-        IONBuffer = ion_alloc((ion_client)pHandle->hIONHandle, size, 0, mask, flag);
+        IONBuffer = ion_alloc((ion_client)(intptr_t)pHandle->hIONHandle, size, 0, mask, flag);
     }
 
     if (IONBuffer <= 0) {

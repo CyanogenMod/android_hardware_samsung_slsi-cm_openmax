@@ -251,7 +251,7 @@ OMX_ERRORTYPE Exynos_OMX_AllocateBuffer(
             INIT_SET_SIZE_VERSION(pTempBufferHdr, OMX_BUFFERHEADERTYPE);
             if ((pVideoEnc->bDRMPlayerMode == OMX_TRUE) &&
                 (pExynosPort->bStoreMetaData == OMX_FALSE))
-                pTempBufferHdr->pBuffer = (OMX_PTR)fdTempBuffer;
+                pTempBufferHdr->pBuffer = (OMX_PTR)(intptr_t)fdTempBuffer;
             else
                 pTempBufferHdr->pBuffer = pTempBuffer;
             pTempBufferHdr->nAllocLen      = nSizeBytes;
@@ -363,7 +363,7 @@ OMX_ERRORTYPE Exynos_OMX_FreeBuffer(
                     } else {
                         if ((pVideoEnc->bDRMPlayerMode == OMX_TRUE) &&
                             (nPortIndex == OUTPUT_PORT_INDEX)) {
-                            OMX_PTR mapBuffer = Exynos_OSAL_SharedMemory_IONToVirt(pVideoEnc->hSharedMemory, (int)pOMXBufferHdr->pBuffer);
+                            OMX_PTR mapBuffer = Exynos_OSAL_SharedMemory_IONToVirt(pVideoEnc->hSharedMemory, (int)(intptr_t)pOMXBufferHdr->pBuffer);
                             Exynos_OSAL_SharedMemory_Free(pVideoEnc->hSharedMemory, mapBuffer);
                         } else {
                             Exynos_OSAL_SharedMemory_Free(pVideoEnc->hSharedMemory, pOMXBufferHdr->pBuffer);
@@ -405,8 +405,8 @@ EXIT:
 }
 
 OMX_ERRORTYPE Exynos_OMX_AllocateTunnelBuffer(
-    EXYNOS_OMX_BASEPORT     *pOMXBasePort,
-    OMX_U32                  nPortIndex)
+    EXYNOS_OMX_BASEPORT     *pOMXBasePort __unused,
+    OMX_U32                  nPortIndex __unused)
 {
     OMX_ERRORTYPE                 ret               = OMX_ErrorNone;
     EXYNOS_OMX_BASEPORT          *pExynosPort       = NULL;
@@ -421,8 +421,8 @@ EXIT:
 }
 
 OMX_ERRORTYPE Exynos_OMX_FreeTunnelBuffer(
-    EXYNOS_OMX_BASEPORT     *pOMXBasePort,
-    OMX_U32                  nPortIndex)
+    EXYNOS_OMX_BASEPORT     *pOMXBasePort __unused,
+    OMX_U32                  nPortIndex __unused)
 {
     OMX_ERRORTYPE            ret            = OMX_ErrorNone;
     EXYNOS_OMX_BASEPORT     *pExynosPort    = NULL;
@@ -553,7 +553,7 @@ OMX_ERRORTYPE Exynos_OMX_FlushPort(
                         OMX_PTR ppBuf[MAX_BUFFER_PLANE];
                         if (OMX_ErrorNone ==
                             Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pExynosPort->processData.bufferHeader->pBuffer, ppBuf))
-                            Exynos_OSAL_UnlockANBHandle((OMX_U32)ppBuf[0]);
+                            Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)ppBuf[0]);
                     }
 #endif
                     Exynos_OMX_InputBufferReturn(pOMXComponent, pExynosPort->processData.bufferHeader);
@@ -575,7 +575,7 @@ OMX_ERRORTYPE Exynos_OMX_FlushPort(
                             OMX_PTR ppBuf[MAX_BUFFER_PLANE];
                             if (OMX_ErrorNone ==
                                 Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pExynosPort->extendBufferHeader[i].OMXBufferHeader->pBuffer, ppBuf))
-                                Exynos_OSAL_UnlockANBHandle((OMX_U32)ppBuf[0]);
+                                Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)ppBuf[0]);
                         }
 #endif
                         Exynos_OMX_InputBufferReturn(pOMXComponent,
@@ -2023,7 +2023,7 @@ OMX_ERRORTYPE Exynos_Shared_DataToBuffer(EXYNOS_OMX_DATA *pData, EXYNOS_OMX_DATA
         OMX_PTR ppBuf[MAX_BUFFER_PLANE];
         if (OMX_ErrorNone ==
             Exynos_OSAL_GetInfoFromMetaData((OMX_BYTE)pUseBuffer->bufferHeader->pBuffer, ppBuf))
-            Exynos_OSAL_UnlockANBHandle((OMX_U32)ppBuf[0]);
+            Exynos_OSAL_UnlockANBHandle((OMX_U32)(uintptr_t)ppBuf[0]);
     }
 #endif
 
